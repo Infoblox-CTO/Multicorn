@@ -97,8 +97,9 @@ endif
 
 PYTHON_TEST_VERSION ?= $(python_version)
 PG_TEST_VERSION ?= $(MAJORVERSION)
-SUPPORTS_WRITE=$(shell expr ${VERSION_NUM} \>= 90300)
-SUPPORTS_IMPORT=$(shell expr ${VERSION_NUM} \>= 90500)
+PG_VERSION_NUM = $(shell awk '/PG_VERSION_NUM/ { print $$3 }' $(shell $(PG_CONFIG) --includedir-server)/pg_config.h)
+SUPPORTS_WRITE=$(shell expr ${PG_VERSION_NUM} \>= 90300)
+SUPPORTS_IMPORT=$(shell expr ${PG_VERSION_NUM} \>= 90500)
 UNSUPPORTS_SQLALCHEMY=$(shell python -c "import sqlalchemy;import psycopg2"  1> /dev/null 2>&1; echo $$?)
 
 TESTS        = test-$(PYTHON_TEST_VERSION)/sql/multicorn_cache_invalidation.sql \
